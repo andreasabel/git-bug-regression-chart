@@ -123,3 +123,37 @@ README.md now documents:
  - authentication behavior
  - produced output files
  - the exact requested palette quote
+
+Prompt 4
+========
+
+- On the produced chart, reverse the legend on the right so that the latest version is on top and the first version on bottom.
+- Reduce the width of the bars to 70% of their current width.
+- With each milestone, also record the date when it was closed and store this with the "milestones" list in the JSON files.
+- Produce a second chart "regressions-open-by-date.svg" where the x-axis is labeled by years and the bars for each milestone are placed at the date when they were closed (rather than the bars being uni-spaced).  (The legend on the right (mapping colors to milestones/versions) shall stay.)
+
+Answer
+------
+
+Rewrote the chart pipeline to support the new milestone/date features in src/release-tools/regression-chart/main.py and updated
+README.md accordingly.
+
+Meaningful changes:
+
+ - Chart updates
+  - reversed the right-side legend so the latest version is at the top
+  - reduced bar width to 70% of the previous width
+  - added regressions-open-by-date.svg, with bars placed at each milestone’s close date and the x-axis labeled by years
+ - JSON updates
+  - regressions-closed-by-milestone.json
+  - regressions-open-by-milestone.json
+  now store milestones as objects like:
+
+  { "version": "2.6.4", "closed_on": "2024-04-07" }
+ - CLI
+  - --chart-only now regenerates both
+   - regressions-open-by-version.svg
+   - regressions-open-by-date.svg
+   from regressions-open-by-milestone.json
+
+The README now documents the extra SVG output, the new milestone JSON shape, and the updated chart-only behavior.

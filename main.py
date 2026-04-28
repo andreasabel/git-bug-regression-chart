@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Generate regression JSON reports, a markdown table, and an SVG chart."""
+"""Generate regression JSON reports, a markdown table, and two SVG charts."""
 
 from __future__ import annotations
 
@@ -16,6 +16,7 @@ import sys
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -180,6 +181,53 @@ class RegressionRecord:
 
 
 @dataclass(frozen=True)
+class MilestoneInfo:
+    """Metadata recorded for one milestone on the chart x-axis."""
+
+    # version is the milestone title, which is also used as the count-matrix key.
+    version: str
+    # closed_on is the day on which GitHub reports the milestone as closed, when known.
+    closed_on: date | None
+
+    def to_json_dict(self) -> dict[str, Any]:
+        """Convert the milestone to a JSON-serializable dictionary.
+
+        Args:
+            self: The milestone metadata to serialize.
+
+        Returns:
+            A dictionary with the milestone version and close date.
+        """
+
+        return {
+            "version": self.version,
+            "closed_on": self.closed_on.isoformat() if self.closed_on is not None else None,
+        }
+
+    @classmethod
+    def from_json_value(cls, value: Any) -> MilestoneInfo:
+        """Build a MilestoneInfo from a JSON value.
+
+        Args:
+            value: Either a milestone object from the current schema or a plain version string
+                from the older schema.
+
+        Returns:
+            A typed MilestoneInfo instance.
+        """
+
+        if isinstance(value, str):
+            return cls(version=value, closed_on=None)
+        if not isinstance(value, Mapping):
+            raise TypeError("milestone entries must be strings or objects")
+        raw_closed_on: Any = value.get("closed_on")
+        closed_on: date | None = None
+        if raw_closed_on is not None:
+            closed_on = parse_iso_date(str(raw_closed_on))
+        return cls(version=str(value.get("version", "")), closed_on=closed_on)
+
+
+@dataclass(frozen=True)
 class RegressionsByVersionFile:
     """Payload written to `regressions-by-version.json`."""
 
@@ -219,11 +267,11 @@ class RegressionsByVersionFile:
 class MilestoneCountsFile:
     """Payload written to the milestone-based JSON files."""
 
-    # milestones is the ordered milestone axis used by the count matrix.
-    milestones: list[str]
+    # milestones is the ordered milestone axis used by the count matrix, including close dates.
+    milestones: list[MilestoneInfo]
     # versions is the ordered introduced-version axis used by the count matrix.
     versions: list[str]
-    # counts maps each milestone to a map from introduced version to count.
+    # counts maps each milestone version to a map from introduced version to count.
     counts: dict[str, dict[str, int]]
 
     def to_json_dict(self) -> dict[str, Any]:
@@ -237,7 +285,7 @@ class MilestoneCountsFile:
         """
 
         return {
-            "milestones": self.milestones,
+            "milestones": [milestone.to_json_dict() for milestone in self.milestones],
             "versions": self.versions,
             "counts": self.counts,
         }
@@ -255,13 +303,19 @@ class MilestoneCountsFile:
 
         counts_raw: Any = data.get("counts", {})
         counts: dict[str, dict[str, int]] = {}
-        for milestone, row_raw in (counts_raw or {}).items():
+        milestone_key: str
+        row_raw: Any
+        for milestone_key, row_raw in (counts_raw or {}).items():
             row_mapping: Mapping[str, Any] = row_raw if isinstance(row_raw, Mapping) else {}
-            counts[str(milestone)] = {
+            counts[str(milestone_key)] = {
                 str(version): int(value) for version, value in row_mapping.items()
             }
+        milestones_raw: Any = data.get("milestones", [])
+        milestones: list[MilestoneInfo] = [
+            MilestoneInfo.from_json_value(value) for value in milestones_raw
+        ]
         return cls(
-            milestones=[str(value) for value in data.get("milestones", [])],
+            milestones=milestones,
             versions=[str(value) for value in data.get("versions", [])],
             counts=counts,
         )
@@ -311,7 +365,7 @@ def parse_arguments(argv: Sequence[str] | None) -> Config:
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description=(
             "Extract regression data from git-bug, write JSON and markdown reports, "
-            "and render an SVG chart."
+            "and render SVG charts."
         )
     )
     parser.add_argument(
@@ -338,8 +392,8 @@ def parse_arguments(argv: Sequence[str] | None) -> Config:
         "--chart-only",
         action="store_true",
         help=(
-            "Regenerate regressions-open-by-version.svg from "
-            "regressions-open-by-milestone.json in --out-dir."
+            "Regenerate regressions-open-by-version.svg and regressions-open-by-date.svg "
+            "from regressions-open-by-milestone.json in --out-dir."
         ),
     )
     namespace: argparse.Namespace = parser.parse_args(argv)
@@ -364,25 +418,32 @@ def run(config: Config) -> None:
 
     ensure_output_directory(config.out_dir)
     if config.chart_only:
-        regenerate_chart(config.out_dir)
+        regenerate_charts(config.out_dir)
         return
 
     issues: list[RegressionIssue] = load_regression_issues(config.repo_root)
     if not issues:
         raise RuntimeError("no regression issues found")
 
+    # GitHub is needed both for issue milestones and for milestone close dates used in the
+    # date-based chart.
+    token: str = github_token()
     closed_issue_numbers: list[int] = [
         issue.issue_number for issue in issues if issue.status == "closed"
     ]
-    milestones: dict[int, str] = {}
+    closing_milestones: dict[int, str] = {}
     if closed_issue_numbers:
-        token: str = github_token()
-        milestones = fetch_closing_milestones(
+        closing_milestones = fetch_closing_milestones(
             owner=config.owner,
             repo=config.repo,
             token=token,
             issue_numbers=closed_issue_numbers,
         )
+    milestone_close_dates: dict[str, date | None] = fetch_milestone_close_dates(
+        owner=config.owner,
+        repo=config.repo,
+        token=token,
+    )
 
     # Local git-bug JSON lacks closing milestones, so closed issues are enriched here before
     # any aggregate data is derived.
@@ -396,7 +457,7 @@ def run(config: Config) -> None:
             regression_labels=issue.regression_labels,
             status=issue.status,
             closing_milestone=(
-                milestones.get(issue.issue_number)
+                closing_milestones.get(issue.issue_number)
                 if issue.status == "closed"
                 else issue.closing_milestone
             ),
@@ -404,12 +465,11 @@ def run(config: Config) -> None:
         for issue in issues
     ]
 
-    (
-        version_order,
-        milestone_order,
-        unclassified_closed,
-    ) = collect_versions(enriched_issues)
-    if not milestone_order:
+    version_order, milestones, unclassified_closed = collect_versions(
+        issues=enriched_issues,
+        milestone_close_dates=milestone_close_dates,
+    )
+    if not milestones:
         raise RuntimeError("no version milestones found")
 
     by_version: RegressionsByVersionFile = build_regressions_by_version(
@@ -420,25 +480,30 @@ def run(config: Config) -> None:
     closed_counts: MilestoneCountsFile = build_closed_counts(
         issues=enriched_issues,
         version_order=version_order,
-        milestone_order=milestone_order,
+        milestones=milestones,
     )
     open_counts: MilestoneCountsFile = build_open_counts(
         issues=enriched_issues,
         version_order=version_order,
-        milestone_order=milestone_order,
+        milestones=milestones,
     )
     markdown: str = markdown_table(
         version_order=version_order,
-        milestone_order=milestone_order,
+        milestones=milestones,
         open_counts=open_counts,
     )
-    svg: str = render_svg(
+    version_svg: str = render_version_svg(
         version_order=version_order,
-        milestone_order=milestone_order,
+        milestones=milestones,
+        open_counts=open_counts,
+    )
+    date_svg: str = render_date_svg(
+        version_order=version_order,
+        milestones=milestones,
         open_counts=open_counts,
     )
 
-    # Persist all derived artifacts with a shared version order.
+    # Persist all derived artifacts with a shared version order and milestone metadata.
     write_json(config.out_dir / "regressions-by-version.json", by_version.to_json_dict())
     write_json(
         config.out_dir / "regressions-closed-by-milestone.json",
@@ -449,13 +514,15 @@ def run(config: Config) -> None:
         open_counts.to_json_dict(),
     )
     write_text(config.out_dir / "regressions-open-by-version.md", markdown)
-    write_text(config.out_dir / "regressions-open-by-version.svg", svg)
+    write_text(config.out_dir / "regressions-open-by-version.svg", version_svg)
+    write_text(config.out_dir / "regressions-open-by-date.svg", date_svg)
 
     print(f"Wrote {config.out_dir / 'regressions-by-version.json'}")
     print(f"Wrote {config.out_dir / 'regressions-closed-by-milestone.json'}")
     print(f"Wrote {config.out_dir / 'regressions-open-by-milestone.json'}")
     print(f"Wrote {config.out_dir / 'regressions-open-by-version.md'}")
     print(f"Wrote {config.out_dir / 'regressions-open-by-version.svg'}")
+    print(f"Wrote {config.out_dir / 'regressions-open-by-date.svg'}")
 
 
 def ensure_output_directory(out_dir: Path) -> None:
@@ -471,28 +538,36 @@ def ensure_output_directory(out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
 
-def regenerate_chart(out_dir: Path) -> None:
-    """Regenerate the SVG chart from previously computed JSON data.
+def regenerate_charts(out_dir: Path) -> None:
+    """Regenerate both SVG charts from previously computed JSON data.
 
     Args:
         out_dir: Directory that already contains `regressions-open-by-milestone.json`.
 
     Returns:
-        Nothing. The SVG chart is rewritten in out_dir.
+        Nothing. The SVG charts are rewritten in out_dir.
     """
 
     open_counts_path: Path = out_dir / "regressions-open-by-milestone.json"
     open_counts: MilestoneCountsFile = MilestoneCountsFile.from_json_dict(
         read_json(open_counts_path)
     )
-    svg: str = render_svg(
+    version_svg: str = render_version_svg(
         version_order=open_counts.versions,
-        milestone_order=open_counts.milestones,
+        milestones=open_counts.milestones,
         open_counts=open_counts,
     )
-    svg_path: Path = out_dir / "regressions-open-by-version.svg"
-    write_text(svg_path, svg)
-    print(f"Wrote {svg_path}")
+    date_svg: str = render_date_svg(
+        version_order=open_counts.versions,
+        milestones=open_counts.milestones,
+        open_counts=open_counts,
+    )
+    version_svg_path: Path = out_dir / "regressions-open-by-version.svg"
+    date_svg_path: Path = out_dir / "regressions-open-by-date.svg"
+    write_text(version_svg_path, version_svg)
+    write_text(date_svg_path, date_svg)
+    print(f"Wrote {version_svg_path}")
+    print(f"Wrote {date_svg_path}")
 
 
 def load_regression_issues(repo_root: Path) -> list[RegressionIssue]:
@@ -600,7 +675,7 @@ def github_token() -> str:
         if token:
             return token
 
-    gh_path: str | None = shutil_which("gh")
+    gh_path: str | None = which("gh")
     if gh_path is not None:
         process: subprocess.CompletedProcess[str] = subprocess.run(
             [gh_path, "auth", "token"],
@@ -678,6 +753,57 @@ def fetch_closing_milestones(
     return result
 
 
+def fetch_milestone_close_dates(
+    owner: str,
+    repo: str,
+    token: str,
+) -> dict[str, date | None]:
+    """Fetch milestone close dates from the GitHub REST API.
+
+    Args:
+        owner: GitHub repository owner.
+        repo: GitHub repository name.
+        token: GitHub API token.
+
+    Returns:
+        A map from milestone title to its close date, or None when the milestone is open.
+    """
+
+    result: dict[str, date | None] = {}
+    page: int = 1
+
+    while True:
+        request: urllib.request.Request = urllib.request.Request(
+            f"https://api.github.com/repos/{owner}/{repo}/milestones?state=all&per_page=100&page={page}",
+            headers={
+                "Authorization": f"bearer {token}",
+                "Accept": "application/vnd.github+json",
+            },
+            method="GET",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=30.0) as response:
+                page_data: Any = json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as error:
+            body: str = error.read().decode("utf-8", errors="replace")
+            raise RuntimeError(f"GitHub milestones returned {error.code}: {body}") from error
+
+        if not page_data:
+            break
+
+        milestone: Any
+        for milestone in page_data:
+            title: str = str(milestone.get("title", "")).strip()
+            closed_at_raw: Any = milestone.get("closed_at")
+            closed_on: date | None = None
+            if closed_at_raw is not None:
+                closed_on = parse_iso_date(str(closed_at_raw)[:10])
+            result[title] = closed_on
+        page += 1
+
+    return result
+
+
 def parse_graphql_repository(data: Mapping[str, Any]) -> dict[int, GraphQLIssue]:
     """Parse aliased GraphQL issue lookups under a repository object.
 
@@ -733,16 +859,18 @@ def milestone_query(owner: str, repo: str, issue_numbers: Sequence[int]) -> str:
 
 def collect_versions(
     issues: Sequence[RegressionIssue],
-) -> tuple[list[str], list[str], list[RegressionRecord]]:
+    milestone_close_dates: Mapping[str, date | None],
+) -> tuple[list[str], list[MilestoneInfo], list[RegressionRecord]]:
     """Derive the global version axis, milestone axis, and unclassified closed issues.
 
     Args:
         issues: Regression issues that already contain introduced versions and any available
             closing milestones.
+        milestone_close_dates: Map from milestone version to its GitHub close date.
 
     Returns:
-        A triple of ordered versions, ordered milestones, and closed issues that could not be
-        placed on a version milestone timeline.
+        A triple of ordered versions, ordered milestone metadata, and closed issues that could
+        not be placed on a version milestone timeline.
     """
 
     version_set: set[str] = set()
@@ -763,9 +891,13 @@ def collect_versions(
         version_set.add(issue.closing_milestone)
 
     version_order: list[str] = sorted_versions(version_set)
-    milestone_order: list[str] = sorted_versions(version_set | milestone_set)
+    milestone_versions: list[str] = sorted_versions(version_set | milestone_set)
+    milestones: list[MilestoneInfo] = [
+        MilestoneInfo(version=version, closed_on=milestone_close_dates.get(version))
+        for version in milestone_versions
+    ]
     unclassified_closed.sort(key=lambda issue: issue.issue_number)
-    return version_order, milestone_order, unclassified_closed
+    return version_order, milestones, unclassified_closed
 
 
 def build_regressions_by_version(
@@ -799,21 +931,23 @@ def build_regressions_by_version(
 def build_closed_counts(
     issues: Sequence[RegressionIssue],
     version_order: Sequence[str],
-    milestone_order: Sequence[str],
+    milestones: Sequence[MilestoneInfo],
 ) -> MilestoneCountsFile:
     """Count how many regressions each milestone closed per introduced version.
 
     Args:
         issues: Regression issues with normalized closing milestones.
         version_order: Introduced-version axis for the output matrix.
-        milestone_order: Milestone axis for the output matrix.
+        milestones: Milestone axis for the output matrix.
 
     Returns:
         The payload written to `regressions-closed-by-milestone.json`.
     """
 
+    milestone_versions: list[str] = [milestone.version for milestone in milestones]
     counts: dict[str, dict[str, int]] = {
-        milestone: {version: 0 for version in version_order} for milestone in milestone_order
+        milestone_version: {version: 0 for version in version_order}
+        for milestone_version in milestone_versions
     }
     for issue in issues:
         if issue.status != "closed" or issue.closing_milestone is None:
@@ -822,7 +956,7 @@ def build_closed_counts(
             continue
         counts[issue.closing_milestone][issue.introduced_version] += 1
     return MilestoneCountsFile(
-        milestones=list(milestone_order),
+        milestones=list(milestones),
         versions=list(version_order),
         counts=counts,
     )
@@ -831,50 +965,50 @@ def build_closed_counts(
 def build_open_counts(
     issues: Sequence[RegressionIssue],
     version_order: Sequence[str],
-    milestone_order: Sequence[str],
+    milestones: Sequence[MilestoneInfo],
 ) -> MilestoneCountsFile:
     """Count how many regressions are still open at each milestone.
 
     Args:
         issues: Regression issues with normalized introduced versions and closing milestones.
         version_order: Introduced-version axis for the output matrix.
-        milestone_order: Milestone axis for the output matrix.
+        milestones: Milestone axis for the output matrix.
 
     Returns:
         The payload written to `regressions-open-by-milestone.json`.
     """
 
     counts: dict[str, dict[str, int]] = {}
-    milestone: str
-    for milestone in milestone_order:
+    milestone: MilestoneInfo
+    for milestone in milestones:
         row: dict[str, int] = {}
         version: str
         for version in version_order:
-            if compare_version(version, milestone) > 0:
+            if compare_version(version, milestone.version) > 0:
                 break
             row[version] = 0
-        counts[milestone] = row
+        counts[milestone.version] = row
 
-    for milestone in milestone_order:
-        row = counts[milestone]
-        issue = None
+    for milestone in milestones:
+        row: dict[str, int] = counts[milestone.version]
+        issue: RegressionIssue
         for issue in issues:
             # Closed issues without a usable version milestone are surfaced in the per-issue JSON
             # but intentionally omitted from the milestone timeline.
             if issue.status == "closed" and not is_version_string(issue.closing_milestone):
                 continue
-            if compare_version(issue.introduced_version, milestone) > 0:
+            if compare_version(issue.introduced_version, milestone.version) > 0:
                 continue
             if (
                 issue.status == "closed"
                 and issue.closing_milestone is not None
-                and compare_version(issue.closing_milestone, milestone) <= 0
+                and compare_version(issue.closing_milestone, milestone.version) <= 0
             ):
                 continue
             row[issue.introduced_version] += 1
 
     return MilestoneCountsFile(
-        milestones=list(milestone_order),
+        milestones=list(milestones),
         versions=list(version_order),
         counts=counts,
     )
@@ -984,16 +1118,29 @@ def is_version_string(value: str | None) -> bool:
     return value is not None and VERSION_PATTERN.fullmatch(value) is not None
 
 
+def parse_iso_date(value: str) -> date:
+    """Parse an ISO `YYYY-MM-DD` date string.
+
+    Args:
+        value: Date string in ISO calendar format.
+
+    Returns:
+        The parsed date value.
+    """
+
+    return date.fromisoformat(value)
+
+
 def markdown_table(
     version_order: Sequence[str],
-    milestone_order: Sequence[str],
+    milestones: Sequence[MilestoneInfo],
     open_counts: MilestoneCountsFile,
 ) -> str:
     """Render the open-count matrix as a markdown table.
 
     Args:
         version_order: Introduced-version axis for the matrix.
-        milestone_order: Milestone axis for the matrix.
+        milestones: Milestone axis for the matrix.
         open_counts: Open-count payload matching the given axes.
 
     Returns:
@@ -1003,16 +1150,16 @@ def markdown_table(
     headers: list[str] = ["", *version_order, "Total"]
     rows: list[list[str]] = [headers, ["---"] * len(headers)]
 
-    milestone: str
-    for milestone in milestone_order:
-        row: list[str] = [milestone]
+    milestone: MilestoneInfo
+    for milestone in milestones:
+        row: list[str] = [milestone.version]
         total: int = 0
         version: str
         for version in version_order:
-            if compare_version(version, milestone) > 0:
+            if compare_version(version, milestone.version) > 0:
                 row.append("")
                 continue
-            value: int = open_counts.counts[milestone][version]
+            value: int = open_counts.counts[milestone.version][version]
             total += value
             row.append(str(value))
         row.append(str(total))
@@ -1054,26 +1201,28 @@ def pad_cell(value: str, width: int, numeric: bool) -> str:
     return value.ljust(width)
 
 
-def render_svg(
+def render_version_svg(
     version_order: Sequence[str],
-    milestone_order: Sequence[str],
+    milestones: Sequence[MilestoneInfo],
     open_counts: MilestoneCountsFile,
 ) -> str:
-    """Render the open-count matrix as a stacked SVG bar chart.
+    """Render the open-count matrix as a stacked SVG bar chart with uniform spacing.
 
     Args:
         version_order: Introduced-version axis for the matrix.
-        milestone_order: Milestone axis for the matrix.
+        milestones: Milestone axis for the matrix.
         open_counts: Open-count payload matching the given axes.
 
     Returns:
         A self-contained SVG document.
     """
 
-    totals: dict[str, int] = {
-        milestone: sum(open_counts.counts[milestone].get(version, 0) for version in version_order)
-        for milestone in milestone_order
-    }
+    milestone_versions: list[str] = [milestone.version for milestone in milestones]
+    totals: dict[str, int] = total_counts(
+        version_order=version_order,
+        milestone_versions=milestone_versions,
+        open_counts=open_counts,
+    )
     max_total: int = max(totals.values(), default=1)
     if max_total == 0:
         max_total = 1
@@ -1085,69 +1234,39 @@ def render_svg(
     legend_columns: int = 1 if len(version_order) <= 24 else math.ceil(len(version_order) / 24.0)
     legend_column_width: int = 130
     legend_width: int = legend_columns * legend_column_width + 20
-    plot_width: int = max(840, len(milestone_order) * 56)
+    plot_width: int = max(840, len(milestone_versions) * 56)
     width: int = left_margin + plot_width + legend_width
     height: int = top_margin + plot_height + bottom_margin
     plot_bottom: int = top_margin + plot_height
     plot_right: int = left_margin + plot_width
 
-    slot_width: float = plot_width / max(len(milestone_order), 1)
-    bar_width: float = slot_width * 0.72
+    slot_width: float = plot_width / max(len(milestone_versions), 1)
+    bar_width: float = uniform_bar_width(slot_width)
     scale: float = plot_height / float(max_total)
     tick_step: int = nice_step(max_total)
-    color_by_version: dict[str, str] = {
-        version: VERSION_COLORS[index % len(VERSION_COLORS)]
-        for index, version in enumerate(version_order)
-    }
+    color_by_version: dict[str, str] = colors_by_version(version_order)
 
-    lines: list[str] = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
-        f'viewBox="0 0 {width} {height}">',
-        "<style>",
-        "text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#222}",
-        ".axis{stroke:#444;stroke-width:1}",
-        ".grid{stroke:#ddd;stroke-width:1}",
-        ".bar{stroke:#fff;stroke-width:1}",
-        ".tick{font-size:11px}",
-        ".label{font-size:12px}",
-        ".title{font-size:18px;font-weight:600}",
-        "</style>",
-        f'<text class="title" x="{left_margin}" y="26">Open regressions by introduced version</text>',
-    ]
-
-    tick: int
-    for tick in range(0, max_total + 1, tick_step):
-        y: int = plot_bottom - round(tick * scale)
-        lines.append(
-            f'<line class="grid" x1="{left_margin}" y1="{y}" x2="{plot_right}" y2="{y}"/>'
-        )
-        lines.append(
-            f'<text class="tick" x="{left_margin - 8}" y="{y}" text-anchor="end" '
-            f'dominant-baseline="middle">{tick}</text>'
-        )
-
-    lines.append(
-        f'<line class="axis" x1="{left_margin}" y1="{plot_bottom}" '
-        f'x2="{plot_right}" y2="{plot_bottom}"/>'
+    lines: list[str] = svg_header(
+        width=width,
+        height=height,
+        title="Open regressions by introduced version",
     )
-    lines.append(
-        f'<line class="axis" x1="{left_margin}" y1="{top_margin}" '
-        f'x2="{left_margin}" y2="{plot_bottom}"/>'
-    )
+    lines.extend(horizontal_grid_lines(left_margin, plot_right, plot_bottom, scale, max_total, tick_step))
+    lines.extend(axis_lines(left_margin, plot_right, plot_bottom, top_margin))
 
     # Draw each bar from bottom to top in version order so that each version keeps a stable
     # color across milestones.
     milestone_index: int
-    milestone: str
-    for milestone_index, milestone in enumerate(milestone_order):
+    milestone: MilestoneInfo
+    for milestone_index, milestone in enumerate(milestones):
         center_x: float = left_margin + slot_width * (milestone_index + 0.5)
         x: float = center_x - bar_width / 2.0
         current_y: float = float(plot_bottom)
         version: str
         for version in version_order:
-            if compare_version(version, milestone) > 0:
+            if compare_version(version, milestone.version) > 0:
                 break
-            value: int = open_counts.counts[milestone].get(version, 0)
+            value: int = open_counts.counts[milestone.version].get(version, 0)
             if value == 0:
                 continue
             segment_height: float = value * scale
@@ -1159,21 +1278,322 @@ def render_svg(
         lines.append(
             f'<text class="tick" transform="translate({center_x - bar_width / 2.0:.2f},'
             f'{plot_bottom + 18}) rotate(45)" text-anchor="start">'
-            f"{html.escape(milestone)}</text>"
+            f"{html.escape(milestone.version)}</text>"
         )
 
-    lines.append(
-        f'<text class="label" x="22" y="{top_margin + plot_height // 2}" text-anchor="middle" '
-        f'transform="rotate(-90 22 {top_margin + plot_height // 2})">Open regressions</text>'
+    lines.append(y_axis_label(top_margin=top_margin, plot_height=plot_height))
+    lines.extend(
+        legend_lines(
+            version_order=version_order,
+            color_by_version=color_by_version,
+            legend_x=plot_right + 28,
+            legend_top=top_margin + 10,
+            reverse=True,
+        )
+    )
+    lines.append("</svg>")
+    return "\n".join(lines) + "\n"
+
+
+def render_date_svg(
+    version_order: Sequence[str],
+    milestones: Sequence[MilestoneInfo],
+    open_counts: MilestoneCountsFile,
+) -> str:
+    """Render the open-count matrix as a stacked SVG chart positioned by close date.
+
+    Args:
+        version_order: Introduced-version axis for the matrix.
+        milestones: Milestone axis for the matrix, including close dates.
+        open_counts: Open-count payload matching the given axes.
+
+    Returns:
+        A self-contained SVG document.
+    """
+
+    dated_milestones: list[MilestoneInfo] = [
+        milestone for milestone in milestones if milestone.closed_on is not None
+    ]
+    if not dated_milestones:
+        return empty_svg("Open regressions by milestone close date", "No milestone close dates available")
+
+    milestone_versions: list[str] = [milestone.version for milestone in dated_milestones]
+    totals: dict[str, int] = total_counts(
+        version_order=version_order,
+        milestone_versions=milestone_versions,
+        open_counts=open_counts,
+    )
+    max_total: int = max(totals.values(), default=1)
+    if max_total == 0:
+        max_total = 1
+
+    min_closed_on: date = min(milestone.closed_on for milestone in dated_milestones if milestone.closed_on is not None)
+    max_closed_on: date = max(milestone.closed_on for milestone in dated_milestones if milestone.closed_on is not None)
+    axis_start: date = date(min_closed_on.year, 1, 1)
+    axis_end: date = date(max_closed_on.year + 1, 1, 1)
+    span_days: int = max((axis_end - axis_start).days, 1)
+
+    top_margin: int = 40
+    left_margin: int = 70
+    bottom_margin: int = 90
+    plot_height: int = 420
+    legend_columns: int = 1 if len(version_order) <= 24 else math.ceil(len(version_order) / 24.0)
+    legend_column_width: int = 130
+    legend_width: int = legend_columns * legend_column_width + 20
+    year_span: int = axis_end.year - axis_start.year
+    plot_width: int = max(840, year_span * 180)
+    width: int = left_margin + plot_width + legend_width
+    height: int = top_margin + plot_height + bottom_margin
+    plot_bottom: int = top_margin + plot_height
+    plot_right: int = left_margin + plot_width
+
+    uniform_slot_width: float = max(840, len(milestones) * 56) / max(len(milestones), 1)
+    bar_width: float = uniform_bar_width(uniform_slot_width)
+    scale: float = plot_height / float(max_total)
+    tick_step: int = nice_step(max_total)
+    color_by_version: dict[str, str] = colors_by_version(version_order)
+
+    lines: list[str] = svg_header(
+        width=width,
+        height=height,
+        title="Open regressions by milestone close date",
+    )
+    lines.extend(horizontal_grid_lines(left_margin, plot_right, plot_bottom, scale, max_total, tick_step))
+
+    year: int
+    for year in range(axis_start.year, axis_end.year + 1):
+        year_start: date = date(year, 1, 1)
+        x: float = left_margin + plot_width * ((year_start - axis_start).days / span_days)
+        if x > plot_right + 0.5:
+            continue
+        lines.append(
+            f'<line class="grid" x1="{x:.2f}" y1="{top_margin}" x2="{x:.2f}" y2="{plot_bottom}"/>'
+        )
+        lines.append(
+            f'<text class="tick" x="{x:.2f}" y="{plot_bottom + 20}" text-anchor="middle">{year}</text>'
+        )
+
+    lines.extend(axis_lines(left_margin, plot_right, plot_bottom, top_margin))
+
+    # Draw bars at the actual close dates of milestones instead of giving each milestone an
+    # equal-width slot on the x-axis.
+    milestone: MilestoneInfo
+    for milestone in dated_milestones:
+        closed_on: date = milestone.closed_on if milestone.closed_on is not None else axis_start
+        x_center: float = left_margin + plot_width * ((closed_on - axis_start).days / span_days)
+        x: float = x_center - bar_width / 2.0
+        current_y: float = float(plot_bottom)
+        version: str
+        for version in version_order:
+            if compare_version(version, milestone.version) > 0:
+                break
+            value: int = open_counts.counts[milestone.version].get(version, 0)
+            if value == 0:
+                continue
+            segment_height: float = value * scale
+            current_y -= segment_height
+            lines.append(
+                f'<rect class="bar" x="{x:.2f}" y="{current_y:.2f}" width="{bar_width:.2f}" '
+                f'height="{segment_height:.2f}" fill="{color_by_version[version]}"/>'
+            )
+
+    lines.append(y_axis_label(top_margin=top_margin, plot_height=plot_height))
+    lines.extend(
+        legend_lines(
+            version_order=version_order,
+            color_by_version=color_by_version,
+            legend_x=plot_right + 28,
+            legend_top=top_margin + 10,
+            reverse=True,
+        )
+    )
+    lines.append("</svg>")
+    return "\n".join(lines) + "\n"
+
+
+def total_counts(
+    version_order: Sequence[str],
+    milestone_versions: Sequence[str],
+    open_counts: MilestoneCountsFile,
+) -> dict[str, int]:
+    """Compute the total open regressions per milestone.
+
+    Args:
+        version_order: Introduced-version axis for the matrix.
+        milestone_versions: Milestone versions whose rows should be totaled.
+        open_counts: Open-count payload to aggregate.
+
+    Returns:
+        A map from milestone version to total count across all versions.
+    """
+
+    return {
+        milestone_version: sum(
+            open_counts.counts[milestone_version].get(version, 0) for version in version_order
+        )
+        for milestone_version in milestone_versions
+    }
+
+
+def colors_by_version(version_order: Sequence[str]) -> dict[str, str]:
+    """Assign a stable chart color to each introduced version.
+
+    Args:
+        version_order: Versions in the order used by the chart and legend.
+
+    Returns:
+        A map from version string to CSS color.
+    """
+
+    return {
+        version: VERSION_COLORS[index % len(VERSION_COLORS)]
+        for index, version in enumerate(version_order)
+    }
+
+
+def uniform_bar_width(slot_width: float) -> float:
+    """Compute the updated bar width from a uniform chart slot width.
+
+    Args:
+        slot_width: Width of one milestone slot in the uniformly spaced chart.
+
+    Returns:
+        The chart bar width after applying the requested 70 percent shrink relative to the
+        previous width.
+    """
+
+    return slot_width * 0.72 * 0.70
+
+
+def svg_header(width: int, height: int, title: str) -> list[str]:
+    """Build the common SVG header and stylesheet lines.
+
+    Args:
+        width: SVG viewport width in pixels.
+        height: SVG viewport height in pixels.
+        title: Chart title text.
+
+    Returns:
+        SVG lines containing the opening tag, stylesheet, and title.
+    """
+
+    return [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
+        f'viewBox="0 0 {width} {height}">',
+        "<style>",
+        "text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#222}",
+        ".axis{stroke:#444;stroke-width:1}",
+        ".grid{stroke:#ddd;stroke-width:1}",
+        ".bar{stroke:#fff;stroke-width:1}",
+        ".tick{font-size:11px}",
+        ".label{font-size:12px}",
+        ".title{font-size:18px;font-weight:600}",
+        "</style>",
+        f'<text class="title" x="70" y="26">{html.escape(title)}</text>',
+    ]
+
+
+def horizontal_grid_lines(
+    left_margin: int,
+    plot_right: int,
+    plot_bottom: int,
+    scale: float,
+    max_total: int,
+    tick_step: int,
+) -> list[str]:
+    """Build horizontal grid and y-axis tick-label lines.
+
+    Args:
+        left_margin: Left edge of the plotting area.
+        plot_right: Right edge of the plotting area.
+        plot_bottom: Bottom y-coordinate of the plotting area.
+        scale: Pixel height per unit count.
+        max_total: Largest y-axis value.
+        tick_step: Increment between y-axis ticks.
+
+    Returns:
+        SVG lines for horizontal grid lines and numeric y-axis labels.
+    """
+
+    lines: list[str] = []
+    tick: int
+    for tick in range(0, max_total + 1, tick_step):
+        y: int = plot_bottom - round(tick * scale)
+        lines.append(
+            f'<line class="grid" x1="{left_margin}" y1="{y}" x2="{plot_right}" y2="{y}"/>'
+        )
+        lines.append(
+            f'<text class="tick" x="{left_margin - 8}" y="{y}" text-anchor="end" '
+            f'dominant-baseline="middle">{tick}</text>'
+        )
+    return lines
+
+
+def axis_lines(left_margin: int, plot_right: int, plot_bottom: int, top_margin: int) -> list[str]:
+    """Build the common x- and y-axis lines.
+
+    Args:
+        left_margin: Left edge of the plotting area.
+        plot_right: Right edge of the plotting area.
+        plot_bottom: Bottom y-coordinate of the plotting area.
+        top_margin: Top y-coordinate of the plotting area.
+
+    Returns:
+        SVG lines for the x- and y-axes.
+    """
+
+    return [
+        f'<line class="axis" x1="{left_margin}" y1="{plot_bottom}" x2="{plot_right}" y2="{plot_bottom}"/>',
+        f'<line class="axis" x1="{left_margin}" y1="{top_margin}" x2="{left_margin}" y2="{plot_bottom}"/>',
+    ]
+
+
+def y_axis_label(top_margin: int, plot_height: int) -> str:
+    """Build the vertical y-axis label.
+
+    Args:
+        top_margin: Top y-coordinate of the plotting area.
+        plot_height: Plot height in pixels.
+
+    Returns:
+        An SVG text element for the y-axis label.
+    """
+
+    y_center: int = top_margin + plot_height // 2
+    return (
+        f'<text class="label" x="22" y="{y_center}" text-anchor="middle" '
+        f'transform="rotate(-90 22 {y_center})">Open regressions</text>'
     )
 
-    legend_x: int = plot_right + 28
-    legend_top: int = top_margin + 10
-    version_index: int
-    for version_index, version in enumerate(version_order):
-        column: int = version_index // 24
-        row: int = version_index % 24
-        x: int = legend_x + column * legend_column_width
+
+def legend_lines(
+    version_order: Sequence[str],
+    color_by_version: Mapping[str, str],
+    legend_x: int,
+    legend_top: int,
+    reverse: bool,
+) -> list[str]:
+    """Build the legend lines for one chart.
+
+    Args:
+        version_order: Versions to show in the legend.
+        color_by_version: Mapping from version to chart color.
+        legend_x: Left x-coordinate of the legend area.
+        legend_top: Top y-coordinate of the legend area.
+        reverse: Whether the legend should list the latest version first.
+
+    Returns:
+        SVG lines for colored legend swatches and labels.
+    """
+
+    ordered_versions: list[str] = list(reversed(version_order)) if reverse else list(version_order)
+    lines: list[str] = []
+    legend_index: int
+    version: str
+    for legend_index, version in enumerate(ordered_versions):
+        column: int = legend_index // 24
+        row: int = legend_index % 24
+        x: int = legend_x + column * 130
         y: int = legend_top + row * 18
         lines.append(
             f'<rect x="{x}" y="{y - 10}" width="12" height="12" '
@@ -1182,7 +1602,22 @@ def render_svg(
         lines.append(
             f'<text class="label" x="{x + 18}" y="{y}">{html.escape(version)}</text>'
         )
+    return lines
 
+
+def empty_svg(title: str, message: str) -> str:
+    """Build a small SVG containing only a title and message.
+
+    Args:
+        title: Chart title text.
+        message: Message shown in the plot area.
+
+    Returns:
+        A self-contained fallback SVG document.
+    """
+
+    lines: list[str] = svg_header(width=900, height=200, title=title)
+    lines.append(f'<text class="label" x="70" y="100">{html.escape(message)}</text>')
     lines.append("</svg>")
     return "\n".join(lines) + "\n"
 
@@ -1256,8 +1691,8 @@ def write_text(path: Path, content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
-def shutil_which(command: str) -> str | None:
-    """Resolve a command on PATH without importing shutil for one small use.
+def which(command: str) -> str | None:
+    """Resolve a command on PATH.
 
     Args:
         command: Executable name to locate.
