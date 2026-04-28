@@ -1234,7 +1234,7 @@ def render_version_svg(
     legend_columns: int = 1 if len(version_order) <= 24 else math.ceil(len(version_order) / 24.0)
     legend_column_width: int = 130
     legend_width: int = legend_columns * legend_column_width + 20
-    plot_width: int = max(840, len(milestone_versions) * 56)
+    plot_width: int = max(840, len(milestone_versions) * 40)
     width: int = left_margin + plot_width + legend_width
     height: int = top_margin + plot_height + bottom_margin
     plot_bottom: int = top_margin + plot_height
@@ -1341,13 +1341,13 @@ def render_date_svg(
     legend_column_width: int = 130
     legend_width: int = legend_columns * legend_column_width + 20
     year_span: int = axis_end.year - axis_start.year
-    plot_width: int = max(840, year_span * 180)
+    plot_width: int = max(840, year_span * 90)
     width: int = left_margin + plot_width + legend_width
     height: int = top_margin + plot_height + bottom_margin
     plot_bottom: int = top_margin + plot_height
     plot_right: int = left_margin + plot_width
 
-    uniform_slot_width: float = max(840, len(milestones) * 56) / max(len(milestones), 1)
+    uniform_slot_width: float = max(840, len(milestones) * 30) / max(len(milestones), 1)
     bar_width: float = uniform_bar_width(uniform_slot_width)
     scale: float = plot_height / float(max_total)
     tick_step: int = nice_step(max_total)
@@ -1458,11 +1458,10 @@ def uniform_bar_width(slot_width: float) -> float:
         slot_width: Width of one milestone slot in the uniformly spaced chart.
 
     Returns:
-        The chart bar width after applying the requested 70 percent shrink relative to the
-        previous width.
+        The chart bar width.
     """
 
-    return slot_width * 0.72 * 0.70
+    return slot_width * 0.72
 
 
 def svg_header(width: int, height: int, title: str) -> list[str]:
