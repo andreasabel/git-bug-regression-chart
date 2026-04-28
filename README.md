@@ -2,6 +2,8 @@
 
 `regression-chart` extracts regression information from the local `git-bug` bridge data in `.git/git-bug`, augments closed issues with their GitHub milestone, and writes machine-readable summaries plus human-readable reports.
 
+The implementation is a standalone Python 3 script that uses only the standard library plus the external `git bug` and optional `gh` CLIs.
+
 ## How it works
 
 1. It runs `git bug bug --format json` in the target repository and selects issues labeled `regression in VER`.
@@ -19,29 +21,44 @@ From the repository root:
 
 ```bash
 cd src/release-tools/regression-chart
-go run . -repo-root /Users/abela/agda -out-dir /tmp/regression-chart
+python3 main.py --repo-root /Users/abela/agda --out-dir /tmp/regression-chart
 ```
 
 Or, when already in the repository root:
 
 ```bash
-go run ./src/release-tools/regression-chart -repo-root . -out-dir ./tmp/regression-chart
+python3 ./src/release-tools/regression-chart/main.py --repo-root . --out-dir ./tmp/regression-chart
+```
+
+There is also a small wrapper script:
+
+```bash
+./src/release-tools/regression-chart/run.sh --repo-root . --out-dir ./tmp/regression-chart
+```
+
+To regenerate only the chart from previously computed JSON data:
+
+```bash
+python3 ./src/release-tools/regression-chart/main.py --out-dir ./tmp/regression-chart --chart-only
 ```
 
 ## Parameters
 
 The tool accepts the following flags:
 
-| Flag         | Default | Description                                                                                  |
-|--------------|---------|----------------------------------------------------------------------------------------------|
-| `-repo-root` | `.`     | Path to the Git repository root that contains `.git/git-bug`. The tool runs `git bug` there. |
-| `-out-dir`   | `.`     | Directory in which all generated files are written. The directory is created if needed.      |
-| `-owner`     | `agda`  | GitHub owner used for milestone lookups.                                                     |
-| `-repo`      | `agda`  | GitHub repository name used for milestone lookups.                                           |
+| Flag | Default | Description |
+|---|---|---|
+| `--repo-root` | `.` | Path to the Git repository root that contains `.git/git-bug`. The tool runs `git bug` there. This flag is ignored in `--chart-only` mode. |
+| `--out-dir` | `.` | Directory in which generated files are written. The directory is created if needed. In `--chart-only` mode, this directory must already contain `regressions-open-by-milestone.json`. |
+| `--owner` | `agda` | GitHub owner used for milestone lookups. This flag is only used in full generation mode. |
+| `--repo` | `agda` | GitHub repository name used for milestone lookups. This flag is only used in full generation mode. |
+| `--chart-only` | `false` | Regenerate `regressions-open-by-version.svg` from `regressions-open-by-milestone.json` without recomputing issue or milestone data. |
 
 ## Authentication
 
-Yes. GitHub authentication is needed for milestone lookup on closed issues.
+GitHub authentication is needed in full generation mode because closed issues are enriched with milestone data from the GitHub GraphQL API.
+
+No GitHub authentication is needed in `--chart-only` mode.
 
 The tool looks for authentication in this order:
 
@@ -55,15 +72,27 @@ The local `git-bug` data itself does not need extra authentication, but the repo
 
 ## Output
 
-The tool writes five files into `-out-dir`:
+The tool writes five files into `--out-dir` in full generation mode:
 
-| File                                   | Description                                                                                                                                                                                                                                        |
-|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `regressions-by-version.json`          | For each introduced version, the list of regression issues. Closed issues include their closing milestone when it is a version milestone. If a closed issue has no usable version milestone, it is listed under `unclassified_closed_regressions`. |
-| `regressions-closed-by-milestone.json` | For each milestone, a map from introduced version to the number of regressions closed in that milestone.                                                                                                                                           |
-| `regressions-open-by-milestone.json`   | For each milestone, a map from introduced version to the number of regressions still open at that milestone. The milestone itself is included as the last possible introduced version in each row.                                                 |
-| `regressions-open-by-version.md`       | A markdown table of the open-regression matrix.                                                                                                                                                                                                    |
-| `regressions-open-by-version.svg`      | A stacked bar chart of open regressions per milestone, colored by introduced version.                                                                                                                                                              |
+| File | Description |
+|---|---|
+| `regressions-by-version.json` | For each introduced version, the list of regression issues. Closed issues include their closing milestone when it is a version milestone. If a closed issue has no usable version milestone, it is listed under `unclassified_closed_regressions`. |
+| `regressions-closed-by-milestone.json` | For each milestone, a map from introduced version to the number of regressions closed in that milestone. |
+| `regressions-open-by-milestone.json` | For each milestone, a map from introduced version to the number of regressions still open at that milestone. The milestone itself is included as the last possible introduced version in each row. |
+| `regressions-open-by-version.md` | A markdown table of the open-regression matrix. |
+| `regressions-open-by-version.svg` | A stacked bar chart of open regressions per milestone, colored by introduced version. |
+
+In `--chart-only` mode, only `regressions-open-by-version.svg` is rewritten.
+
+## Chart colors
+
+The chart uses the following palette, quoted exactly as requested:
+
+> generated by https://gka.github.io/palettes/#/25\|d\|488f31,ffe692\|ffe692,de425b\|1\|1
+
+```python
+['#488f31', '#599639', '#699e41', '#78a549', '#87ac51', '#96b459', '#a5bb61', '#b4c269', '#c3c971', '#d2d079', '#e1d881', '#f0df8a', '#ffe692', '#fed98d', '#fccd89', '#fac084', '#f8b47f', '#f5a77b', '#f39a76', '#f08d71', '#ed7f6d', '#e97268', '#e66364', '#e2535f', '#de425b']
+```
 
 ## Notes about the data
 
