@@ -1,0 +1,2428 @@
+{
+  "versions": [
+    "2.3.0",
+    "2.3.2",
+    "2.5.1",
+    "2.5.2",
+    "2.5.3",
+    "2.5.4",
+    "2.5.4.1",
+    "2.5.4.2",
+    "2.6.0",
+    "2.6.0.1",
+    "2.6.1",
+    "2.6.1.2",
+    "2.6.2",
+    "2.6.2.1",
+    "2.6.2.2",
+    "2.6.3",
+    "2.6.4",
+    "2.6.4.1",
+    "2.6.4.2",
+    "2.6.4.3",
+    "2.7.0",
+    "2.7.0.1",
+    "2.8.0",
+    "2.9.0"
+  ],
+  "regressions": {
+    "2.3.0": [
+      {
+        "issue_number": 3744,
+        "human_id": "6affefb",
+        "title": "Internal error related to abstract",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3744",
+        "regression_labels": [
+          "2.3.0"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4189,
+        "human_id": "21bcbb9",
+        "title": "Record constructors sometimes in record modules, sometimes not",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4189",
+        "regression_labels": [
+          "2.3.0",
+          "2.5.2"
+        ],
+        "closing_milestone": "2.6.1"
+      }
+    ],
+    "2.3.2": [
+      {
+        "issue_number": 2963,
+        "human_id": "a3841f2",
+        "title": "Extended lambdas bypass positivity checking in records",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2963",
+        "regression_labels": [
+          "2.3.2"
+        ],
+        "closing_milestone": "2.5.4"
+      }
+    ],
+    "2.5.1": [
+      {
+        "issue_number": 3578,
+        "human_id": "cb57f16",
+        "title": "Pattern matching unifier normalizes too much",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3578",
+        "regression_labels": [
+          "2.5.1"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 4125,
+        "human_id": "bf26185",
+        "title": "Type checker normalizes too much",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4125",
+        "regression_labels": [
+          "2.5.1"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4399,
+        "human_id": "acc0d0d",
+        "title": "Case split on unnamed argument produces non-sensical code",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4399",
+        "regression_labels": [
+          "2.5.1",
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4647,
+        "human_id": "eca6bf4",
+        "title": "Evaluate private definitions (toplevel interaction)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4647",
+        "regression_labels": [
+          "2.5.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4773,
+        "human_id": "3557ada",
+        "title": "Missing does-not-export warning for `open` directive for parametrised module",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4773",
+        "regression_labels": [
+          "2.5.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 6179,
+        "human_id": "9a51844",
+        "title": "Agda adds the current directory to the include paths even if `-i` is given",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/6179",
+        "regression_labels": [
+          "2.5.1"
+        ]
+      },
+      {
+        "issue_number": 6931,
+        "human_id": "44cadac",
+        "title": "Internal error with an empty parametrized module from a different file",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6931",
+        "regression_labels": [
+          "2.5.1"
+        ],
+        "closing_milestone": "2.6.4.1"
+      },
+      {
+        "issue_number": 8375,
+        "human_id": "66512ab",
+        "title": "Importing an unrelated module can fix parsing",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/8375",
+        "regression_labels": [
+          "2.5.1"
+        ]
+      }
+    ],
+    "2.5.2": [
+      {
+        "issue_number": 2774,
+        "human_id": "83b2117",
+        "title": "Internal error with sized types",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2774",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 2827,
+        "human_id": "c151242",
+        "title": "Variables off in with-clauses.  Parameter refinement?",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2827",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2859,
+        "human_id": "76ae981",
+        "title": "Error \"pattern variable shadows constructor\" caused by parameter refinement",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2859",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2916,
+        "human_id": "62110b2",
+        "title": "The GHC backend generates code with an incorrect number of constructor arguments",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2916",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2954,
+        "human_id": "98dd1d3",
+        "title": "Pattern matching on string gives unexpected unreachable clause",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2954",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2959,
+        "human_id": "bbc7d76",
+        "title": "Repeating a successful command after revert + reload fails with caching enabled",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2959",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2989,
+        "human_id": "d936ae6",
+        "title": "Internal error when checking record match in let expr",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2989",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2994,
+        "human_id": "8bc3d89",
+        "title": "Solution accepted in hole is subsequently rejected on reload",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2994",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 3053,
+        "human_id": "4a03e54",
+        "title": "Name clash in error message",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3053",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 3114,
+        "human_id": "a4c0044",
+        "title": "Missing alpha-renaming when printing constraints",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3114",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3742,
+        "human_id": "9ca1c9c",
+        "title": "Strange error message for code that combines mutual and abstract",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3742",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.6.0.1"
+      },
+      {
+        "issue_number": 4163,
+        "human_id": "9f0154d",
+        "title": "pattern matching in parametrized module leads to ill-typed definitions in where modules.",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4163",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4752,
+        "human_id": "8717322",
+        "title": "Panic on unbound variable with pattern synonym",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4752",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 5478,
+        "human_id": "681e271",
+        "title": "Open goal inside record causes internal error (eta-contraction)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5478",
+        "regression_labels": [
+          "2.5.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      }
+    ],
+    "2.5.3": [
+      {
+        "issue_number": 2484,
+        "human_id": "36951cb",
+        "title": "Regression related to sized types",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2484",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2826,
+        "human_id": "158d484",
+        "title": "Case splitting on earlier variable uses duplicate variable name",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2826",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2840,
+        "human_id": "1d36a2e",
+        "title": "Internal error in positivity with modules/datatype definitions",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2840",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2856,
+        "human_id": "c50b7c7",
+        "title": "Panic: unbound variable",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2856",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2881,
+        "human_id": "9c21e01",
+        "title": "Internal error in BasicOps",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2881",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2901,
+        "human_id": "ec6eb70",
+        "title": "Regression in positivity checker",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/2901",
+        "regression_labels": [
+          "2.5.3"
+        ]
+      },
+      {
+        "issue_number": 2927,
+        "human_id": "5b21b02",
+        "title": "Panic related to sized types",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2927",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 2975,
+        "human_id": "3ac2d42",
+        "title": "Termination checker runs too early for definitions inside record (or: positivity checker runs too late)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/2975",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 3026,
+        "human_id": "75da896",
+        "title": "Well-founded induction on Size is inconsistent",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/3026",
+        "regression_labels": [
+          "2.5.3"
+        ]
+      },
+      {
+        "issue_number": 3049,
+        "human_id": "033275b",
+        "title": "Positivity unsoundness",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3049",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.5.4"
+      },
+      {
+        "issue_number": 3514,
+        "human_id": "b4654b4",
+        "title": "Accidential language change in 2.5.3: hiding is now part of name when resolving hidden argument insertion",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3514",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3968,
+        "human_id": "fdbcd51",
+        "title": "Single clause marked unreachable",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/3968",
+        "regression_labels": [
+          "2.5.3"
+        ]
+      },
+      {
+        "issue_number": 3972,
+        "human_id": "125e4eb",
+        "title": "Unreachable clause leads to internal error at Serialise/Instances/Internal.hs:94 (MetaV)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3972",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4447,
+        "human_id": "cad89f4",
+        "title": "Positivity: internal error with projection in constructor type",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4447",
+        "regression_labels": [
+          "2.5.3"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 6577,
+        "human_id": "98cb39b",
+        "title": "Allow unification when types are not equal but have a common supertype?",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/6577",
+        "regression_labels": [
+          "2.5.3"
+        ]
+      }
+    ],
+    "2.5.4": [
+      {
+        "issue_number": 3008,
+        "human_id": "3920bad",
+        "title": "TERMINATING pragma ignored in record",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/3008",
+        "regression_labels": [
+          "2.5.4"
+        ]
+      },
+      {
+        "issue_number": 3039,
+        "human_id": "bc12a32",
+        "title": "Incomplete handling of size subtyping",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/3039",
+        "regression_labels": [
+          "2.5.4"
+        ]
+      },
+      {
+        "issue_number": 3095,
+        "human_id": "699d584",
+        "title": "Would like to make hidden variable visible but it is created ambiguous",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3095",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 3119,
+        "human_id": "2794974",
+        "title": "Missing highlighting when delete-trailing-whitespace is used",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3119",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.5.4.1"
+      },
+      {
+        "issue_number": 3125,
+        "human_id": "4ec286a",
+        "title": "Internal error in InstanceArguments.hs:292",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3125",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3148,
+        "human_id": "56ce3a8",
+        "title": "Regression: unification error in function application",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3148",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 3177,
+        "human_id": "32ebde1",
+        "title": "Slow typechecking with unsolved instance constraint",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3177",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.5.4.2"
+      },
+      {
+        "issue_number": 3248,
+        "human_id": "3b9268b",
+        "title": "Max of two sizes less than i",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3248",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3256,
+        "human_id": "b34e671",
+        "title": "Internal error at src/full/Agda/TypeChecking/Reduce.hs:148",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3256",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3403,
+        "human_id": "3cf24b4",
+        "title": "Internal error in Agda.TypeChecking.Rules.Term",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3403",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3404,
+        "human_id": "9903c8b",
+        "title": "Positivity checker marks postulates as constant in mutual block",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3404",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3466,
+        "human_id": "338a801",
+        "title": "two definitionally equal terms are not equal",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3466",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3498,
+        "human_id": "f8921d9",
+        "title": "Internal error in activateLoadedFileCache",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3498",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3501,
+        "human_id": "552f83b",
+        "title": "Case split in let clause causes internal error",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3501",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3503,
+        "human_id": "dcfa10e",
+        "title": "Internal error in BasicOps",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3503",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3536,
+        "human_id": "af1cb1c",
+        "title": "Patternmatching on coinductive record fields breaks",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3536",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3544,
+        "human_id": "b4f15aa",
+        "title": "internal error @ TypeChecking/Forcing.hs:227",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3544",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3621,
+        "human_id": "3a491fa",
+        "title": "performance problem",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3621",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3631,
+        "human_id": "5764d91",
+        "title": "Performance with --no-universe-polymorphism",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3631",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0"
+      },
+      {
+        "issue_number": 3696,
+        "human_id": "001d393",
+        "title": "Make `AgdaAny` polykinded?",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3696",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.0.1"
+      },
+      {
+        "issue_number": 3843,
+        "human_id": "a04ab77",
+        "title": "Internal error with-clause and unification",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3843",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 3892,
+        "human_id": "683583b",
+        "title": "Internal error with `data .. where` definitions",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3892",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 3910,
+        "human_id": "2b14c11",
+        "title": "Dotted pattern should fail if argument is not inferrable",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/3910",
+        "regression_labels": [
+          "2.5.4"
+        ]
+      },
+      {
+        "issue_number": 3937,
+        "human_id": "d1df291",
+        "title": "Internal error at \"ConcreteToAbstract:1372\"",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3937",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4051,
+        "human_id": "84bfcb0",
+        "title": "Internal error when importing a module with a hole in a type",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4051",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4060,
+        "human_id": "6510f7c",
+        "title": "Very high memory usage in 2.5.4 compared to 2.5.3",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/4060",
+        "regression_labels": [
+          "2.5.4"
+        ]
+      },
+      {
+        "issue_number": 4135,
+        "human_id": "5055b36",
+        "title": "Constructor disambiguation picks non-unique solution",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4135",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4142,
+        "human_id": "338fc53",
+        "title": "defCopatternLHS needs to be set when record expression were translated to copatterns",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4142",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4150,
+        "human_id": "32c2c8d",
+        "title": "Not in scope error instead of missing type signature error",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4150",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 4631,
+        "human_id": "1768180",
+        "title": "Non-linear patterns handled in a buggy way",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4631",
+        "regression_labels": [
+          "2.5.4",
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4723,
+        "human_id": "423b876",
+        "title": "Since 2.5.4, Agda parses ordinary patterns after ellipsis",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/4723",
+        "regression_labels": [
+          "2.5.4"
+        ]
+      },
+      {
+        "issue_number": 5066,
+        "human_id": "27e7d37",
+        "title": "Severe performance regression in 2.5.4 ?",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/5066",
+        "regression_labels": [
+          "2.5.4"
+        ]
+      },
+      {
+        "issue_number": 7158,
+        "human_id": "ce42602",
+        "title": "Non-sensical error since 2.5.4 when applying a non-function",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7158",
+        "regression_labels": [
+          "2.5.4"
+        ],
+        "closing_milestone": "2.7.0"
+      }
+    ],
+    "2.5.4.1": [
+      {
+        "issue_number": 3225,
+        "human_id": "977beb1",
+        "title": "Install of Agda 2.5.4.1 from Hackage fails",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3225",
+        "regression_labels": [
+          "2.5.4.1"
+        ],
+        "closing_milestone": "2.5.4.2"
+      }
+    ],
+    "2.5.4.2": null,
+    "2.6.0": [
+      {
+        "issue_number": 3054,
+        "human_id": "6802e50",
+        "title": "Reduction missing during LHS checking",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/3054",
+        "regression_labels": [
+          "2.6.0"
+        ]
+      },
+      {
+        "issue_number": 3538,
+        "human_id": "d4ddcc0",
+        "title": "Regression: Rewrite rule involving constructors rejected in parametrized module",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3538",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 3692,
+        "human_id": "7d4b4db",
+        "title": "Omission of absurd patterns in automatically added absurd clauses causes too optimistic polarity.",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3692",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.0.1"
+      },
+      {
+        "issue_number": 3828,
+        "human_id": "13b113f",
+        "title": "Internal error in Agda/TypeChecking/Coverage.hs:467",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3828",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 3900,
+        "human_id": "7011790",
+        "title": "Abstract constructor not usable in function definition involving \"with\"",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3900",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 3919,
+        "human_id": "6d58ab4",
+        "title": "Case splitting fails in parameterized module",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3919",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 3930,
+        "human_id": "291e071",
+        "title": "BUILTIN NATURAL internal error at Forcing.hs:232",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3930",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 3932,
+        "human_id": "9cdcaf0",
+        "title": "Internal error when mixing implicit and explicit mutual blocks",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/3932",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4044,
+        "human_id": "08ff46f",
+        "title": "Equality checking uses too much memory in 2.6.0 (compared to 2.5.4)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4044",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4066,
+        "human_id": "d3d05e1",
+        "title": "Regression related to instance resolution",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4066",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4148,
+        "human_id": "d5e2cd2",
+        "title": "Internal error related to records and type-level indices",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4148",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4260,
+        "human_id": "0630bbc",
+        "title": "Incorrect highlighting",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4260",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1"
+      },
+      {
+        "issue_number": 4481,
+        "human_id": "014007d",
+        "title": "Named implicit arguments do not behave the same in anonymous lambdas \u0026 definitions",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4481",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4569,
+        "human_id": "d6573e8",
+        "title": "Build failure with dynamic linking (logic in Setup.hs broken)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4569",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.1.2"
+      },
+      {
+        "issue_number": 4882,
+        "human_id": "e4dce40",
+        "title": "Missing `reduce` in `literalStrategy`",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4882",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 5055,
+        "human_id": "b65e741",
+        "title": "Internal error related to pattern synonyms",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5055",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 5349,
+        "human_id": "52126e8",
+        "title": "Instance resolution should not require type annotations in unambiguous situations",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/5349",
+        "regression_labels": [
+          "2.6.0"
+        ]
+      },
+      {
+        "issue_number": 5359,
+        "human_id": "70d6f22",
+        "title": "Switching `-W error` on or off rechecks everything",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/5359",
+        "regression_labels": [
+          "2.6.0"
+        ]
+      },
+      {
+        "issue_number": 5875,
+        "human_id": "ba8a956",
+        "title": "Instance Search breaks Termination Highlighting",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5875",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6095,
+        "human_id": "adb7fc4",
+        "title": "Ambiguous pattern synonyms broken with anonymous module",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6095",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6380,
+        "human_id": "ccfe23f",
+        "title": "Confusing warning about turning instances into instances",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6380",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.6.4"
+      },
+      {
+        "issue_number": 6509,
+        "human_id": "424d897",
+        "title": "Agda seems to be very slow at typechecking records with many fields",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6509",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 6584,
+        "human_id": "fd8a5fb",
+        "title": "Case splitting on record renames top-level function",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6584",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 6994,
+        "human_id": "58d526d",
+        "title": "Warnings are turned off, but code is still highlighted",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6994",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7136,
+        "human_id": "91c3022",
+        "title": "Pattern synonyms with named arguments can be defined but not used",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7136",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7236,
+        "human_id": "c20f6b3",
+        "title": "Expected a hidden argument, but found a visible argument in with-abstraction when using REWRITE",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7236",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 8300,
+        "human_id": "d5b692d",
+        "title": "Instanceness of principal argument dropped by postfix projection",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8300",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 8427,
+        "human_id": "9821bfe",
+        "title": "Shadowed variable names are printed inconsistently",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/8427",
+        "regression_labels": [
+          "2.6.0"
+        ]
+      },
+      {
+        "issue_number": 8435,
+        "human_id": "6ae5fb2",
+        "title": "In `mutual` blocks `data`/`record` signatures can be given after their definition",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8435",
+        "regression_labels": [
+          "2.6.0"
+        ],
+        "closing_milestone": "2.9.0"
+      }
+    ],
+    "2.6.0.1": null,
+    "2.6.1": [
+      {
+        "issue_number": 4521,
+        "human_id": "c566dda",
+        "title": "Massive increase in memory required to install Agda 2.6.1",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4521",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4528,
+        "human_id": "dbabc8e",
+        "title": "Internal error due to new forcing translation",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4528",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4704,
+        "human_id": "3912daa",
+        "title": "Case-split generates invalid code",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4704",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4710,
+        "human_id": "346505f",
+        "title": "Regression in instance search due to normalization",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4710",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4721,
+        "human_id": "c1a0bf5",
+        "title": "de Bruijn index out of scope when using rewriting",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4721",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4724,
+        "human_id": "4b1206c",
+        "title": "Faulty reconstruction of ellipsis in debug printing",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4724",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4778,
+        "human_id": "cb52169",
+        "title": "Expansion of ellipsis no longer faithful to what the user wrote",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4778",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 4929,
+        "human_id": "9a60e9d",
+        "title": "Regression in 2.6.1 connected to forcing translation (internal error)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4929",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 5065,
+        "human_id": "c23b73b",
+        "title": "The termination checker reduces with non-exact clauses",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5065",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 5252,
+        "human_id": "cc48ee7",
+        "title": "Internal error when case splitting pattern-lambda with higher rank type",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5252",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2"
+      },
+      {
+        "issue_number": 5283,
+        "human_id": "864dd70",
+        "title": "Tactic command runs forever",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5283",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5492,
+        "human_id": "f33be2f",
+        "title": "Instance dependent definition before instance field in record causes internal error",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5492",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5506,
+        "human_id": "b297f58",
+        "title": "Agda panic: Pattern match failure",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5506",
+        "regression_labels": [
+          "2.6.1",
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5610,
+        "human_id": "51ae6b7",
+        "title": "Panic when checking pragma BUILTIN SHARP",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5610",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5712,
+        "human_id": "ae8da2b",
+        "title": "`__IMPOSSIBLE__` when tactic is used on record fields that are functions",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5712",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2.2"
+      },
+      {
+        "issue_number": 5809,
+        "human_id": "b03e66b",
+        "title": "Internal error at CheckInternal.hs:335:10 when intentionally misusing `--irrelevant-projections`",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5809",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2.2"
+      },
+      {
+        "issue_number": 5923,
+        "human_id": "7f8484b",
+        "title": "Internal error in rewriting",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5923",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6003,
+        "human_id": "fcb7890",
+        "title": "de Bruijn index out of scope when rewriting",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6003",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6006,
+        "human_id": "e35cd6c",
+        "title": "Internal error rewriting with holes",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6006",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6042,
+        "human_id": "eb90503",
+        "title": "De Bruijn index out of scope when rewriting without-K",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6042",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6043,
+        "human_id": "c33b1a6",
+        "title": "de Bruijn error on unexpected implicit argument",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6043",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6067,
+        "human_id": "0540b86",
+        "title": "Another de Bruijn error in rewriting",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6067",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6087,
+        "human_id": "3dbea4d",
+        "title": "__IMPOSSIBLE__ at src/full/Agda/TypeChecking/Rules/LHS.hs:1552:19 in Agda-2.6.2",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6087",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 6687,
+        "human_id": "c9ee574",
+        "title": "Termination checker bug with CATCHALL",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6687",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.4"
+      },
+      {
+        "issue_number": 6867,
+        "human_id": "50ddf0b",
+        "title": "Agda rejects identity function on indexed datatype with erased index",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6867",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7044,
+        "human_id": "5ad1c31",
+        "title": "Serializer crashes on blocked definitions when using --allow-unsolved-metas",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7044",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.6.4.2"
+      },
+      {
+        "issue_number": 7181,
+        "human_id": "4cfed11",
+        "title": "Forcing translation prevents reduction within function definition",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7181",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7624,
+        "human_id": "f2348fd",
+        "title": "Internal error when interactively checking expression with new meta-variables",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7624",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7658,
+        "human_id": "28e9eb5",
+        "title": "Agent Smith proves False",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7658",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7660,
+        "human_id": "a9a2446",
+        "title": "Add a warning for unresolved constructor name",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7660",
+        "regression_labels": [
+          "2.6.1"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 8150,
+        "human_id": "f80925b",
+        "title": "Generate helper function reorders arguments",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8150",
+        "regression_labels": [
+          "2.6.1",
+          "2.6.4"
+        ],
+        "closing_milestone": "2.9.0"
+      }
+    ],
+    "2.6.1.2": null,
+    "2.6.2": [
+      {
+        "issue_number": 4702,
+        "human_id": "965084a",
+        "title": "Regression in the termination checker",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/4702",
+        "regression_labels": [
+          "2.6.2"
+        ]
+      },
+      {
+        "issue_number": 4725,
+        "human_id": "e0a1798",
+        "title": "Cubical Agda: Program rejected by termination checker due to moved dot pattern",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/4725",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 5153,
+        "human_id": "a147c04",
+        "title": "Inline more often?",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/5153",
+        "regression_labels": [
+          "2.6.2"
+        ]
+      },
+      {
+        "issue_number": 5508,
+        "human_id": "0cd8556",
+        "title": "Internal error typechecking non-terminating function on case-insensitive filesystem",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5508",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5544,
+        "human_id": "d288b31",
+        "title": "Internal error caused by addition of `Checkpoints` to `OpenThing`",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5544",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5565,
+        "human_id": "fc43d7c",
+        "title": "Internal error in Agda.TypeChecking.MetaVars",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5565",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5584,
+        "human_id": "61ca8c1",
+        "title": "Internal error when opening a module inside a constructor",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5584",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5620,
+        "human_id": "653d2e9",
+        "title": "Seemingly incorrect warning for abstract definition without type signature",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5620",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5633,
+        "human_id": "7b631f5",
+        "title": "Case splitting inserts one `with` pattern too much (regression in 2.6.2)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5633",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5638,
+        "human_id": "9cd6c8a",
+        "title": "Internal error with missing type signature in `interleaved mutual` type",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5638",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5657,
+        "human_id": "d9d38d7",
+        "title": "Internal error with postfix projection",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5657",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.1"
+      },
+      {
+        "issue_number": 5681,
+        "human_id": "c611a83",
+        "title": "Panic on record declaration with unknown sort",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5681",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 5705,
+        "human_id": "db73f2b",
+        "title": "Internal error when trying to overflow levels",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5705",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.2"
+      },
+      {
+        "issue_number": 5706,
+        "human_id": "c8d08d8",
+        "title": "Universe overflow causes Russell's paradox",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5706",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.2"
+      },
+      {
+        "issue_number": 5727,
+        "human_id": "f1bcd40",
+        "title": "Reducing universe levels before checking is not sufficient",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5727",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 5728,
+        "human_id": "cb01cd0",
+        "title": "Internal error when pattern matching on `...` in with statement without providing a pattern match",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5728",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 5784,
+        "human_id": "439239b",
+        "title": "Regression in 2.6.2: `primEraseEquality` fails to compute (lack of normalization)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5784",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.2"
+      },
+      {
+        "issue_number": 5805,
+        "human_id": "2ea805e",
+        "title": "\"Panic: uncaught pattern violation\" involving holes and `with`",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5805",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.2"
+      },
+      {
+        "issue_number": 5819,
+        "human_id": "a7cb47d",
+        "title": "__IMPOSSIBLE__ at src/full/Agda/TypeChecking/Reduce/Fast.hs:1394:20",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5819",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.2.2"
+      },
+      {
+        "issue_number": 5845,
+        "human_id": "2619f43",
+        "title": "Internal error caused by abstracting `variables`",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5845",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 5922,
+        "human_id": "4271d04",
+        "title": "Failure of termination checking for reflection-generated code due to data projections",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5922",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 5953,
+        "human_id": "ebbaa72",
+        "title": "Recursor of inductive-inductive type does not pass termination check in Cubical Agda",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5953",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 5955,
+        "human_id": "30d124c",
+        "title": "Composition of Glue Type Causes Infinite Loop",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/5955",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6173,
+        "human_id": "d9960d4",
+        "title": "Internal error at Agda/Syntax/Abstract/Name.hs:150:44",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6173",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 6250,
+        "human_id": "fe130be",
+        "title": "Documentation says `--sized-types` is the default when it isn't",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6250",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6686,
+        "human_id": "2925131",
+        "title": "Visually ambiguous layout since 2.6.2",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/6686",
+        "regression_labels": [
+          "2.6.2"
+        ]
+      },
+      {
+        "issue_number": 6767,
+        "human_id": "0e1d35c",
+        "title": "Internal error related to forcing on literals",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6767",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.4"
+      },
+      {
+        "issue_number": 6795,
+        "human_id": "5bd8397",
+        "title": "Missing warning about discarded `{-# TERMINATING #-}` pragma in `where` block inside `interleaved mutual` block",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6795",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.6.4"
+      },
+      {
+        "issue_number": 7199,
+        "human_id": "59c6409",
+        "title": "Agda re-checks a file with an up-to-date interface file",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7199",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.7.0.1"
+      },
+      {
+        "issue_number": 7208,
+        "human_id": "48ea9fe",
+        "title": "Importing module with wrong namespace causes internal error instead of user-friendly error.",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7208",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7258,
+        "human_id": "2fb4411",
+        "title": "Shape-irrelevance without-K broken by Agda 2.6.2",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7258",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7266,
+        "human_id": "6df89d6",
+        "title": "Internal error at Agda/TypeChecking/Substitute.hs:140:33",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7266",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7301,
+        "human_id": "25434d8",
+        "title": "Agda \u003e=2.6.3 hangs on conflicting record directives",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7301",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7514,
+        "human_id": "c306cdd",
+        "title": "`quote Set` is accepted since 2.6.2, but `quote Set1` is still rejected",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7514",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7656,
+        "human_id": "6714097",
+        "title": "`using ()` shouldn't import anything",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/7656",
+        "regression_labels": [
+          "2.6.2"
+        ]
+      },
+      {
+        "issue_number": 7759,
+        "human_id": "8bdd81f",
+        "title": "Internal error for ellipsis without with-patterns",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7759",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 8521,
+        "human_id": "c74d73d",
+        "title": "__IMPOSSIBLE__ when pattern matching against irrelevant instance argument?",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8521",
+        "regression_labels": [
+          "2.6.2"
+        ],
+        "closing_milestone": "2.9.0"
+      }
+    ],
+    "2.6.2.1": null,
+    "2.6.2.2": [
+      {
+        "issue_number": 7825,
+        "human_id": "f432b1f",
+        "title": "DISPLAY form on irrelevant projection drops arguments",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7825",
+        "regression_labels": [
+          "2.6.2.2"
+        ],
+        "closing_milestone": "2.8.0"
+      }
+    ],
+    "2.6.3": [
+      {
+        "issue_number": 6446,
+        "human_id": "b4d2f80",
+        "title": "Definition is suddenly in Setω when redefining Set and using levelOfType",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6446",
+        "regression_labels": [
+          "2.6.3"
+        ],
+        "closing_milestone": "2.6.3"
+      },
+      {
+        "issue_number": 6715,
+        "human_id": "1041a48",
+        "title": "Type checking loops on certain pattern match in cubical (regression in 2.6.3)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6715",
+        "regression_labels": [
+          "2.6.3"
+        ],
+        "closing_milestone": "2.6.4"
+      },
+      {
+        "issue_number": 6725,
+        "human_id": "2a9b8dd",
+        "title": "Cubical: internal error in `Reduce.hs` (regression in 2.6.3)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6725",
+        "regression_labels": [
+          "2.6.3"
+        ],
+        "closing_milestone": "2.6.4"
+      },
+      {
+        "issue_number": 6750,
+        "human_id": "b5f3d09",
+        "title": "Order of deserialization depends on build of Agda (version of `hashable`)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6750",
+        "regression_labels": [
+          "2.6.3"
+        ],
+        "closing_milestone": "2.6.4"
+      },
+      {
+        "issue_number": 6841,
+        "human_id": "690cc03",
+        "title": "Uncaught pattern violation when using `with...in...` instead of old-school inspect",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6841",
+        "regression_labels": [
+          "2.6.3"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7643,
+        "human_id": "7e84ba6",
+        "title": "Panic: uncaught pattern violation",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7643",
+        "regression_labels": [
+          "2.6.3"
+        ],
+        "closing_milestone": "2.8.0"
+      }
+    ],
+    "2.6.4": [
+      {
+        "issue_number": 6700,
+        "human_id": "4df2288",
+        "title": "Regression related to instance resolution",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/6700",
+        "regression_labels": [
+          "2.6.4"
+        ]
+      },
+      {
+        "issue_number": 6905,
+        "human_id": "87af7b3",
+        "title": "Segfault when running the testsuite with `AGDA_BIN` that is not an absolute path",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6905",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.6.4.1"
+      },
+      {
+        "issue_number": 6930,
+        "human_id": "f29fc4f",
+        "title": "Termination checking with --prop: change in 2.6.4 compared with 2.6.3",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6930",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.6.4.1"
+      },
+      {
+        "issue_number": 6976,
+        "human_id": "db8b30e",
+        "title": "Unexpected failure of instance resolution",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/6976",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7034,
+        "human_id": "98975a2",
+        "title": "Internal error with --two-level due to blocking on solved meta",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7034",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.6.4.2"
+      },
+      {
+        "issue_number": 7105,
+        "human_id": "eeb182c",
+        "title": "Internal error in generate-helper (C-c C-h)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7105",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.6.4.2"
+      },
+      {
+        "issue_number": 7113,
+        "human_id": "45d5b7d",
+        "title": "Instance resolution runs too late, leads to `with`-abstraction failure",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7113",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.6.4.2"
+      },
+      {
+        "issue_number": 7118,
+        "human_id": "b3d1496",
+        "title": "Instance resolution failure in Agda 2.6.4",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7118",
+        "regression_labels": [
+          "2.6.4"
+        ]
+      },
+      {
+        "issue_number": 7150,
+        "human_id": "2a098b9",
+        "title": "Regression in 2.6.4 in `rewrite` with instances",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7150",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.6.4.3"
+      },
+      {
+        "issue_number": 7234,
+        "human_id": "766614b",
+        "title": "Reflected code reduction failure in the presence of erasure",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7234",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7354,
+        "human_id": "9ce5924",
+        "title": "`--save-metas` causes  internal error in `lookupMetaInstantiation`",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7354",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.7.0"
+      },
+      {
+        "issue_number": 7535,
+        "human_id": "6b6937a",
+        "title": "Regression in 2.6.4: Agda thinks large propositions can be transported",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7535",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7737,
+        "human_id": "934aae2",
+        "title": "Instance search getting stuck on argument that it used to resolve",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7737",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 8096,
+        "human_id": "4348e78",
+        "title": "Performance regression for test/Succeed/Issue6097-5",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8096",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 8263,
+        "human_id": "17382ef",
+        "title": "Internal error in ProjectionLike.hs",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8263",
+        "regression_labels": [
+          "2.6.4"
+        ],
+        "closing_milestone": "2.9.0"
+      }
+    ],
+    "2.6.4.1": null,
+    "2.6.4.2": [
+      {
+        "issue_number": 7148,
+        "human_id": "d05018f",
+        "title": "Regression in 2.6.4.2 concerning `with`",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7148",
+        "regression_labels": [
+          "2.6.4.2"
+        ],
+        "closing_milestone": "2.6.4.3"
+      },
+      {
+        "issue_number": 7455,
+        "human_id": "c46a82b",
+        "title": "Both stack and cabal fail to install Agda",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7455",
+        "regression_labels": [
+          "2.6.4.2"
+        ],
+        "closing_milestone": "2.7.0.1"
+      },
+      {
+        "issue_number": 7595,
+        "human_id": "2b2624c",
+        "title": "`with` compiles 40x slower than `case_of_`",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/7595",
+        "regression_labels": [
+          "2.6.4.2"
+        ]
+      },
+      {
+        "issue_number": 7675,
+        "human_id": "81c18ab",
+        "title": "`toIFile` logic from #6988 leads to scattering of `.agdai` files",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7675",
+        "regression_labels": [
+          "2.6.4.2"
+        ],
+        "closing_milestone": "2.8.0"
+      }
+    ],
+    "2.6.4.3": null,
+    "2.7.0": [
+      {
+        "issue_number": 7436,
+        "human_id": "1570384",
+        "title": "Code only reachable from display forms not serialised in Agda 2.7.0",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7436",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.7.0.1"
+      },
+      {
+        "issue_number": 7442,
+        "human_id": "9607a46",
+        "title": "Regression: emptiness check fails when erased constructors are involved",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7442",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.7.0.1"
+      },
+      {
+        "issue_number": 7443,
+        "human_id": "112dba7",
+        "title": "`--exact-split` is not default in 2.7.0, contrary to claims",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7443",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.7.0.1"
+      },
+      {
+        "issue_number": 7452,
+        "human_id": "a29e4aa",
+        "title": "Performance regression caused by making `--save-metas` the default",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7452",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.7.0.1"
+      },
+      {
+        "issue_number": 7486,
+        "human_id": "9888109",
+        "title": "Instance overlaps with all other instances",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7486",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7537,
+        "human_id": "ab6ce36",
+        "title": "Type checking a definition with higher inductive type fails to terminate",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7537",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7587,
+        "human_id": "0ea7d68",
+        "title": "Mimer takes an absurd lambda as the solution of the original goal rather than the current (sub)goal",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7587",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7641,
+        "human_id": "72c12c1",
+        "title": "No error highlighting when \"fits in\" test fails",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7641",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7659,
+        "human_id": "0c64e0f",
+        "title": "Using auto leads to `__IMPOSSIBLE__` when Σ and case_of_ are both present",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7659",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.8.0"
+      },
+      {
+        "issue_number": 7662,
+        "human_id": "6ca5508",
+        "title": "Using Auto with a goal involving musical coinduction `♭` produces incorrect projection",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/7662",
+        "regression_labels": [
+          "2.7.0"
+        ],
+        "closing_milestone": "2.8.0"
+      }
+    ],
+    "2.7.0.1": null,
+    "2.8.0": [
+      {
+        "issue_number": 7847,
+        "human_id": "6def11a",
+        "title": "Postponement of instance constraint causes occurs check failure when used with macros",
+        "status": "open",
+        "url": "https://github.com/agda/agda/issues/7847",
+        "regression_labels": [
+          "2.8.0"
+        ]
+      },
+      {
+        "issue_number": 8094,
+        "human_id": "d3c8b55",
+        "title": "[ regression in 2.8 ] Backends that are enabled by default can no longer print help",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8094",
+        "regression_labels": [
+          "2.8.0"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 8097,
+        "human_id": "4e4f1f3",
+        "title": "Internal error when trying Automatic Proof Search",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8097",
+        "regression_labels": [
+          "2.8.0"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 8168,
+        "human_id": "e5c5983",
+        "title": "Mimer triggers a ParseError",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8168",
+        "regression_labels": [
+          "2.8.0"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 8215,
+        "human_id": "11e8c03",
+        "title": "Internal error triggered by instance declaration within record",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8215",
+        "regression_labels": [
+          "2.8.0"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 8298,
+        "human_id": "fdbf37d",
+        "title": "__IMPOSSIBLE__ for incomplete mixfix copattern definition in let binding",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8298",
+        "regression_labels": [
+          "2.8.0"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 8325,
+        "human_id": "5fdb954",
+        "title": "[master]  An internal error during refining (src/full/Agda/TypeChecking/Monad/Context.hs:672:26)",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8325",
+        "regression_labels": [
+          "2.8.0"
+        ],
+        "closing_milestone": "2.9.0"
+      },
+      {
+        "issue_number": 8341,
+        "human_id": "febf978",
+        "title": "Postulates in safe mode",
+        "status": "closed",
+        "url": "https://github.com/agda/agda/issues/8341",
+        "regression_labels": [
+          "2.8.0"
+        ],
+        "closing_milestone": "2.9.0"
+      }
+    ],
+    "2.9.0": null
+  },
+  "unclassified_closed_regressions": [
+    {
+      "issue_number": 7118,
+      "human_id": "b3d1496",
+      "title": "Instance resolution failure in Agda 2.6.4",
+      "status": "closed",
+      "url": "https://github.com/agda/agda/issues/7118",
+      "regression_labels": [
+        "2.6.4"
+      ]
+    }
+  ]
+}
